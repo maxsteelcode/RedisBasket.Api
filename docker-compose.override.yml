@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+
+  basketredis.db:
+    container_name: basketredis.db
+    restart: always
+    ports:
+      -  "6379:6379"
+  
+  basket.api:
+    container_name: basket.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "CacheSettings:ConnectionString=basketredis.db:6379"
+    depends_on:
+      - basketredis.db 
+    ports:
+      - "8001:80"
